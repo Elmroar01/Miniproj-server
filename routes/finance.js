@@ -6,4 +6,7 @@ const financeservice = require('../services/finance.js');
 router.post('/Income-statement', financeservice.statement);
 router.post('/Inventory',financeservice.Inventory);
 router.post('/PurchasingOrder',financeservice.PurchasingOrder);
+router.post('/GeneralLedger', financeservice.Ledger);
+router.post('/GeneralJournal', financeservice.Journal);
+router.post('/Invoice', financeservice.Invoice);
 module.exports = router;
