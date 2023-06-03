@@ -66,7 +66,7 @@ const Invoice = async (req, res) => {
     const { UserRole, InvoiceNumber } = req.body;
     try {
         if (UserRole == "Manager") {
-            const InvoiceResult = await db.query('SELECT * FROM invoicefinance WHERE InvoiceNumber = ?', [InvoiceNumber]);
+            const InvoiceResult = await db.query('SELECT * FROM invoicefinance WHERE InvoiceNo = ?', [InvoiceNumber]);
             if (InvoiceResult) {
                 res.status(200).json(InvoiceResult);
             } else {
@@ -84,10 +84,10 @@ const Invoice = async (req, res) => {
 
 // General Ledger
 const Ledger = async (req, res) => {
-    const { UserRole, Date } = req.body;
+    const { UserRole} = req.body;
     try {
         if (UserRole == "Manager") {
-            const LedgerResult = await db.query('SELECT * FROM ledger WHERE Date = ?', [Date]);
+            const LedgerResult = await db.query('SELECT * FROM ledger');
             if (LedgerResult) {
                 res.status(200).json(LedgerResult);
             } else {
@@ -105,10 +105,10 @@ const Ledger = async (req, res) => {
 
 //Jornal 
 const Journal = async (req, res) => {
-    const { UserRole, Date } = req.body;
+    const { UserRole} = req.body;
     try {
         if (UserRole == "Manager") {
-            const JournalResult = await db.query('SELECT * FROM generaljournal WHERE date = ?', [Date]);
+            const JournalResult = await db.query('SELECT * FROM generaljournal');
             if (JournalResult) {
                 res.status(200).json(JournalResult);
             } else {
