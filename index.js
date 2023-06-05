@@ -4,6 +4,7 @@ const port = 5000;
 const programmingLanguagesRouter = require("./routes/ProgrammingLanguages");
 const authRoutes = require("./routes/auth");
 const financeRoutes = require("./routes/finance");
+const secret = require('dotenv').config();
 app.use(express.json());
 app.use(
   express.urlencoded({

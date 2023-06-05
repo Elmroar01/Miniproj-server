@@ -1,6 +1,9 @@
 const db = require('./db');
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const secret = process.env.JWT_SECRET ; 
 
 // Register service implementation
 const register = async (req, res) => {
@@ -18,10 +21,13 @@ const register = async (req, res) => {
 
       // Insert the new user into the database
       await db.query('INSERT INTO user_data (UserID, UserName, Password, UserRole, FirstName, LastName, Email) VALUES (?, ?, ?, ?, ?, ?, ?)', [UserID, UserName, hashedPassword, UserRole, FirstName, LastName, Email]);
+      // Sign the token
+      const token = jwt.sign({ UserName: UserName, Password: Password, Email: Email, UserRole: UserRole, FirstName: FirstName, LastName: LastName}, secret);
 
-      res.status(201).json({ message: 'Registration successful' });
+  res.status(201).json({ message: 'Registration successful', token });
+};
     }
-  } catch (error) {
+   catch (error) {
     console.error('Error executing database query:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -43,7 +49,8 @@ const login = async (req, res) => {
 
       if (passwordMatch) {
         // Passwords match, authentication successful
-        res.status(200).json({ message: 'Authentication successful' });
+        const token = jwt.sign({ UserName: user.UserName, Password: results.Password, Email: results.Email, UserRole: results.UserRole, FirstName: results.FirstName, LastName: results.LastName }, secret);
+        res.status(200).json({ message: 'Authentication successful', token });
       } else {
         // Passwords do not match
         res.status(401).json({ message: "Invalid credentials: Password doesn't match" });
