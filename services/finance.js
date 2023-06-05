@@ -12,7 +12,6 @@ const statement = async (req, res) => {
             const [salary] = await db.query('SELECT * FROM salary');
             res.status(200).json(dailyresults, StatementResults, salary);
         } else (res.status(500).json({ message: 'UserRole is not authorize' }));
-
     }
     catch (error) {
         console.error('Error executing database query:', error);

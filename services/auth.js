@@ -21,10 +21,8 @@ const register = async (req, res) => {
 
       // Insert the new user into the database
       await db.query('INSERT INTO user_data (UserID, UserName, Password, UserRole, FirstName, LastName, Email) VALUES (?, ?, ?, ?, ?, ?, ?)', [UserID, UserName, hashedPassword, UserRole, FirstName, LastName, Email]);
-      // Sign the token
-      const token = jwt.sign({ UserName: UserName, Password: Password, Email: Email, UserRole: UserRole, FirstName: FirstName, LastName: LastName}, secret);
 
-  res.status(201).json({ message: 'Registration successful', token });
+  res.status(201).json({ message: 'Registration successful'});
 };
     }
    catch (error) {
@@ -49,7 +47,7 @@ const login = async (req, res) => {
 
       if (passwordMatch) {
         // Passwords match, authentication successful
-        const token = jwt.sign({ UserName: user.UserName, Password: results.Password, Email: results.Email, UserRole: results.UserRole, FirstName: results.FirstName, LastName: results.LastName }, secret);
+        const token = jwt.sign({ UserName: user.UserName, Email: results.Email, UserRole: results.UserRole }, secret);
         res.status(200).json({ message: 'Authentication successful', token });
       } else {
         // Passwords do not match

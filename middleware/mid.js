@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 
-const jwtAuthMiddleware = (req, res, next) => {
+const Authen = (req, res, next) => {
     // Get the token from the request headers, query parameters, or cookies
     const token = req.headers.authorization || req.query.token || req.cookies.token;
   
@@ -14,9 +14,7 @@ const jwtAuthMiddleware = (req, res, next) => {
         req.user = decoded;
 
         // Call the next middleware or route handler
-        if (requiredRole && decoded.UserRole !== requiredRole) {
-            return res.status(403).json({ message: 'Access denied' });
-          }
+        
         next();
       } catch (error) {
         // Token verification failed
@@ -28,4 +26,27 @@ const jwtAuthMiddleware = (req, res, next) => {
     }
   };
   
-  module.exports = jwtAuthMiddleware;
+  const ManagerAuthor = (req, res, next) =>{
+    if (req.user.UserRole !== 'Manager') {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next()
+  };
+
+  const OperatorAuthor = (req, res, next) => {
+    if (req.user.UserRole !== 'Manager'|| req.user.UserRole !== 'Operator'){
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next()
+  };
+  const OfficerAuthor = (req, res, next) => {
+    if (req.user.UserRole !== 'Officer'|| req.user.UserRole !== 'Manager'){
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next()
+  };
+  module.exports = {Authen,
+    ManagerAuthor,
+    OperatorAuthor,
+    OfficerAuthor
+  };
