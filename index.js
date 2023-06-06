@@ -5,6 +5,7 @@ const programmingLanguagesRouter = require("./routes/ProgrammingLanguages");
 const authRoutes = require("./routes/auth");
 const financeRoutes = require("./routes/finance");
 const secret = require('dotenv').config();
+const dashboardRoutes = require("./routes/dashboard")
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -23,6 +24,8 @@ app.get("/", (req, res) => {
 app.use("/programming-languages", programmingLanguagesRouter);
 //authen 
 app.use("/auth", authRoutes);
+//
+app.use("/dashboard", dashboardRoutes);
 //finance
 app.use("/finance", financeRoutes);
 /* Error handler middleware */

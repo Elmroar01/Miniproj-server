@@ -9,7 +9,7 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
-data = pd.read_excel('Mock_up_pi_update.xlsx', sheet_name="Data Daily")
+data = pd.read_excel('Mock_up_pi_update.xlsx', sheet_name="Data Weekly&Monthly")
 df = pd.DataFrame(data)
 
 
@@ -49,13 +49,13 @@ df = pd.DataFrame(data)
 #   sqlFormula = "insert into invoice (invoiceid, paymentnumber, ponumber, taxpayerid, customerid, vehiclenumber,date, gastype, qty, dayprice, amount, tax,totalamount) values ('{}','{}','{}','{}', '{}','{}', '{}', '{}',{} , {},{},{},{})".format(df.iloc[i, 0],df.iloc[i, 1],df.iloc[i, 2],df.iloc[i, 3],df.iloc[i, 4],df.iloc[i, 5],df.iloc[i, 6],df.iloc[i, 7],df.iloc[i, 8],df.iloc[i, 9],df.iloc[i, 10],df.iloc[i, 11],df.iloc[i, 12])
 #   mycursor.execute(sqlFormula)
 
-for i in df.index:
-  sqlFormula = "insert into dailykpi (Date, Amountdiesel,Amountgas95,Notruckin,Notruckout,Avgwaittimeso,Avgwaittimeib,Avgwaittimeob,Avgwaittimediesel,Avgwaittimegas95,Avgservicetimeso,Avgservicetimeib,Avgservicetimeob,Avgservicetimediesel,Avgservicetimegas95,Totalwip,Faildiesel,Failgas95,Avgcycletime, ID) values ('{}',{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{})".format(df.iloc[i, 0],df.iloc[i, 1],df.iloc[i, 2],df.iloc[i, 3],df.iloc[i, 4],df.iloc[i, 5],df.iloc[i, 6],df.iloc[i, 7],df.iloc[i, 8],df.iloc[i, 9],df.iloc[i, 10],df.iloc[i, 11],df.iloc[i, 12],df.iloc[i, 13],df.iloc[i, 14],df.iloc[i, 15],df.iloc[i, 16],df.iloc[i, 17],df.iloc[i, 18],df.iloc[i, 19])
-  mycursor.execute(sqlFormula)
-
 # for i in df.index:
-#   sqlFormula = "insert into weeklykpi (date, amountdiesel,amountgas95,notruckin,notruckout,avgwaittimeso,avgwaittimeib,avgwaittimeob,avgwaittimediesel,avgwaittimegas95,avgservicetimeso,avgservicetimeib,avgservicetimeob,avgservicetimediesel,avgservicetimegas95,avgwip,avgcycletime) values ('{}',{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{})".format(df.iloc[i, 0],df.iloc[i, 1],df.iloc[i, 2],df.iloc[i, 3],df.iloc[i, 4],df.iloc[i, 5],df.iloc[i, 6],df.iloc[i, 7],df.iloc[i, 8],df.iloc[i, 9],df.iloc[i, 10],df.iloc[i, 11],df.iloc[i, 12],df.iloc[i, 13],df.iloc[i, 14],df.iloc[i, 15],df.iloc[i, 16],)
+#   sqlFormula = "insert into dailyandweekly (Date, Amountdiesel,Amountgas95,Notruckin,Notruckout,Avgwaittimeso,Avgwaittimeib,Avgwaittimeob,Avgwaittimediesel,Avgwaittimegas95,Avgservicetimeso,Avgservicetimeib,Avgservicetimeob,Avgservicetimediesel,Avgservicetimegas95,Totalwip,Faildiesel,Failgas95,Avgcycletime, ID) values ('{}',{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{})".format(df.iloc[i, 0],df.iloc[i, 1],df.iloc[i, 2],df.iloc[i, 3],df.iloc[i, 4],df.iloc[i, 5],df.iloc[i, 6],df.iloc[i, 7],df.iloc[i, 8],df.iloc[i, 9],df.iloc[i, 10],df.iloc[i, 11],df.iloc[i, 12],df.iloc[i, 13],df.iloc[i, 14],df.iloc[i, 15],df.iloc[i, 16],df.iloc[i, 17],df.iloc[i, 18],df.iloc[i, 19])
 #   mycursor.execute(sqlFormula)
+
+for i in df.index:
+  sqlFormula = "insert into dailyandweekly (date, amountdiesel,amountgas95,notruckin,notruckout,avgwaittimeso,avgwaittimeib,avgwaittimeob,avgwaittimediesel,avgwaittimegas95,avgservicetimeso,avgservicetimeib,avgservicetimeob,avgservicetimediesel,avgservicetimegas95,avgwip,avgcycletime) values ('{}',{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{})".format(df.iloc[i, 0],df.iloc[i, 1],df.iloc[i, 2],df.iloc[i, 3],df.iloc[i, 4],df.iloc[i, 5],df.iloc[i, 6],df.iloc[i, 7],df.iloc[i, 8],df.iloc[i, 9],df.iloc[i, 10],df.iloc[i, 11],df.iloc[i, 12],df.iloc[i, 13],df.iloc[i, 14],df.iloc[i, 15],df.iloc[i, 16],)
+  mycursor.execute(sqlFormula)
 
   
 
