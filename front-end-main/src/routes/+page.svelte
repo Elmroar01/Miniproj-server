@@ -1,5 +1,51 @@
 <script>
     import "../app.postcss";
+    import { onMount } from "svelte";
+
+    onMount(async function fetchData() {
+    const LoginButton = document.getElementById('loginbutton');
+    LoginButton.addEventListener('click', fetchItems);
+  });
+  async function fetchItems() {
+    try {
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        const userData = {
+            Email: emailInput.value,
+            Password: passwordInput.value,
+    };
+    console.log(userData)
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        body: JSON.stringify(userData
+        ),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        // Successful login
+        const token = data.token; // Assuming the token is returned in the response
+        // Store the token in local storage or a cookie
+        localStorage.setItem('jwtToken', token);
+        console.log("Login successful");
+        routeToPage()
+        // Redirect to another page or perform other actions
+      } else {
+        // Failed login
+        console.log("Login failed:", data.error);
+        // Display an error message or perform other actions
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+  function routeToPage() {
+    window.location.href = '/dashboard';
+   console.log("1")
+}
 </script>
 
 <section class="bg-gray-50 dark:bg-gray-900">
@@ -81,6 +127,7 @@
                     </div>
                     <button
                         type="submit"
+                        id = "loginbutton"
                         class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                         >Sign in</button
                     >

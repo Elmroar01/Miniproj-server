@@ -4,6 +4,6 @@ const jwtmid = require('../middleware/mid.js');
 const Dashboard = require('../services/dashboard.js')
 
 
-router.get('/operator', Dashboard.operationdashboard);
-router.get('/manager', Dashboard.managerdashboard);
+router.post('/operator',jwtmid.Authen,jwtmid.OperatorAuthor, Dashboard.operationdashboard);
+router.get('/manager', jwtmid.Authen,jwtmid.ManagerAuthor,Dashboard.managerdashboard);
 module.exports = router;

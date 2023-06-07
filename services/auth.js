@@ -7,20 +7,20 @@ const secret = process.env.JWT_SECRET ;
 
 // Register service implementation
 const register = async (req, res) => {
-  const { UserName, Password, UserRole, FirstName, LastName, Email } = req.body;
+  const { Email, Password, UserRole } = req.body;
   const UserID = uuid.v4();
   try {
     // Check if the username is already taken
-    const [results] = await db.query('SELECT * FROM user_data WHERE UserName = ?', [UserName]);
+    const [results] = await db.query('SELECT * FROM user_data WHERE Email = ?', [Email]);
 
     if (results) {
-      res.status(400).json({ message: 'Username already taken' });
+      res.status(400).json({ message: 'Email already taken' });
     } else {
       // Hash the password
       const hashedPassword = await bcrypt.hash(Password, 10);
 
       // Insert the new user into the database
-      await db.query('INSERT INTO user_data (UserID, UserName, Password, UserRole, FirstName, LastName, Email) VALUES (?, ?, ?, ?, ?, ?, ?)', [UserID, UserName, hashedPassword, UserRole, FirstName, LastName, Email]);
+      await db.query('INSERT INTO user_data (UserID, Password, UserRole, Email) VALUES (?, ?, ?, ?)', [UserID, hashedPassword, UserRole, Email]);
 
   res.status(201).json({ message: 'Registration successful'});
 };
@@ -33,11 +33,11 @@ const register = async (req, res) => {
 
 // Login service implementation
 const login = async (req, res) => {
-  const { UserName, Password } = req.body;
+  const { Email, Password } = req.body;
 
   try {
     // Retrieve the user's information from the database based on the provided username
-    const [results] = await db.query('SELECT * FROM user_data WHERE UserName = ?', [UserName]);
+    const [results] = await db.query('SELECT * FROM user_data WHERE Email = ?', [Email]);
 
     // Check if the user exists
     if (results) {
@@ -47,7 +47,7 @@ const login = async (req, res) => {
 
       if (passwordMatch) {
         // Passwords match, authentication successful
-        const token = jwt.sign({ UserName: user.UserName, Email: results.Email, UserRole: results.UserRole }, secret);
+        const token = jwt.sign({ Email: results.Email, UserRole: results.UserRole }, secret);
         res.status(200).json({ message: 'Authentication successful', token });
       } else {
         // Passwords do not match

@@ -1,5 +1,13 @@
 <script>
   import "../../../app.postcss";
+  function handleLogout() {
+  // Remove the JWT token from localStorage
+  localStorage.removeItem('jwtToken');
+  
+  // Redirect or perform any other necessary actions after logout
+  // For example, you can redirect to the login page
+  window.location.href = '/';
+}
 
   import {
     Navbar,
@@ -87,7 +95,7 @@
         style="background-image: url(/images/nature-1.webp)"
       />
     </MegaMenu>
-    <NavLi href="/">Logout</NavLi>
+    <NavLi href="/" on:click={handleLogout}>Logout</NavLi>
   </NavUl>
 </Navbar>
 
